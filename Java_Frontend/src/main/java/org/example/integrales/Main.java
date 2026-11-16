@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class Main {
+    private static final Path RUTA_PROLOG = Path.of("Prolog_Backend", "src", "integrales.pl");
+
     public static void main(String[] args) throws Exception {
         Path cli = args.length == 0 ? localizarCli() : Path.of(args[0]);
         SwingUtilities.invokeLater(() -> new Ventana(new ClienteProlog(cli)).setVisible(true));
@@ -21,11 +23,11 @@ public final class Main {
         for (Path origen : origenes) {
             Path carpeta = Files.isDirectory(origen) ? origen : origen.getParent();
             while (carpeta != null) {
-                Path cli = carpeta.resolve("Prolog_Backend/src/cli.pl");
+                Path cli = carpeta.resolve(RUTA_PROLOG);
                 if (Files.isRegularFile(cli)) return cli;
                 carpeta = carpeta.getParent();
             }
         }
-        return Path.of("Prolog_Backend", "src", "cli.pl");
+        return RUTA_PROLOG;
     }
 }

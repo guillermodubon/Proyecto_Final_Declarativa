@@ -3,14 +3,20 @@ package org.example.integrales.ui;
 import org.example.integrales.core.ServicioIntegracion.Solicitud;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Dimension;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -20,7 +26,7 @@ final class Notacion {
     private static final Pattern POTENCIA = Pattern.compile("\\^(?:\\(([+-]?\\d+)\\)|([+-]?\\d+)(?![\\d.^(]))");
     private static final String NORMAL = "0123456789+-";
     private static final String EXPONENTE = "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻";
-    private final JPanel panel = Tema.superficie(Tema.PROFUNDO, null);
+    private final JPanel panel = Tema.superficie(Tema.PROFUNDO);
     private final JLabel inferior = etiqueta(15);
     private final JLabel superior = etiqueta(15);
     private final JLabel expresion = etiqueta(29);
@@ -75,8 +81,23 @@ final class Notacion {
     }
 
     private static JLabel etiquetaIntegral() {
-        JLabel integral = etiqueta(54);
-        integral.setText("∫");
+        var glifo = Tema.formula(54).createGlyphVector(new FontRenderContext(null, true, true), "∫");
+        var contorno = glifo.getVisualBounds();
+        int margen = 2;
+        JLabel integral = new JLabel(new Icon() {
+            @Override public int getIconWidth() { return (int) Math.ceil(contorno.getWidth()) + 2*margen; }
+            @Override public int getIconHeight() { return (int) Math.ceil(contorno.getHeight()) + 2*margen; }
+
+            @Override
+            public void paintIcon(Component componente, Graphics g, int x, int y) {
+                Graphics2D dibujo = (Graphics2D) g.create();
+                dibujo.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                dibujo.setColor(Tema.CLARO);
+                dibujo.drawGlyphVector(glifo, x + margen - (float) contorno.getX(), y + margen - (float) contorno.getY());
+                dibujo.dispose();
+            }
+        });
+        integral.getAccessibleContext().setAccessibleName("Signo de integral");
         return integral;
     }
 
