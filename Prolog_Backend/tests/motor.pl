@@ -37,4 +37,26 @@ test(rechaza_expresion_fuera_del_lenguaje) :-
 test(informa_caso_no_soportado) :-
     resolver("x^x", "1", "2", error('NO_SOPORTADA', _)).
 
+test(integral_constante_por_x) :-
+    resolver("3*x", "0", "2", ok(F, V, Fa, Fb)),
+    assertion(F == 3*x^2/2),
+    assertion(V =:= 6), assertion(Fa =:= 0), assertion(Fb =:= 6).
+
+test(integral_constante_por_funcion) :-
+    resolver("2*x^2", "0", "3", ok(F, V, _, _)),
+    assertion(F == 2*(x^3/3)),
+    assertion(V =:= 18).
+
+test(integral_exponencial) :-
+    resolver("2^x", "0", "3", ok(F, V, _, _)),
+    assertion(F == 2^x/log(2)),
+    assertion(abs(V - 7/log(2)) < 1.0e-12).
+
+test(integral_exponencial_base_uno) :-
+    resolver("1^x", "0", "2", ok(F, V, _, _)),
+    assertion(F == x), assertion(V =:= 2).
+
+test(informa_exponencial_base_no_valida) :-
+    resolver("(-2)^x", "0", "1", error('NO_SOPORTADA', _)).
+
 :- end_tests(motor_integracion).
