@@ -23,17 +23,23 @@ Proyecto_Final_Declarativa/
 │       └── resources/fonts/
 └── Prolog_Backend/
     └── src/
-        ├── cli.pl
-        ├── protocolo.pl
-        ├── entrada.pl
-        ├── evaluacion.pl
-        ├── motor.pl
-        └── modulos/
-            ├── constantes/reglas.pl
-            ├── factores/reglas.pl
-            ├── sumas/reglas.pl
-            └── trigonometricas/reglas.pl
+        └── integrales.pl
 ```
+
+## Literales resueltos
+
+- **a)** Constante numérica: `k`.
+- **b)** Variable: `x`.
+- **c)** Constante por la variable: `k*x`.
+- **d)** Potencia con exponente entero: `x^n`.
+- **f)** Constante por una función: `k*u(x)`.
+- **g)** Suma de funciones: `u(x) + v(x)`.
+- **h)** Resta de funciones: `u(x) - v(x)`.
+- **i)** Exponencial de base constante: `a^x`.
+- **k)** Seno: `sin(x)`.
+- **l)** Coseno: `cos(x)`.
+- **r)** Coseno hiperbólico: `cosh(x)`.
+- **s)** Tangente hiperbólica: `tanh(x)`.
 
 ## Ejecutar
 
