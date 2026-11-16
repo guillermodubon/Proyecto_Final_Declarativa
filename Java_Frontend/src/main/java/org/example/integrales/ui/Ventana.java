@@ -95,8 +95,7 @@ public final class Ventana extends JFrame {
         }
         ejemplos.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> lista, Object dato, int indice,
-                                                          boolean seleccionado, boolean foco) {
+            public Component getListCellRendererComponent(JList<?> lista, Object dato, int indice, boolean seleccionado, boolean foco) {
                 Object texto = dato instanceof Opcion opcion ? opcion.texto() : dato;
                 JLabel celda = (JLabel) super.getListCellRendererComponent(lista, texto, indice, seleccionado, foco);
                 celda.setFont(Tema.texto(Font.PLAIN, 14));
@@ -115,12 +114,12 @@ public final class Ventana extends JFrame {
     private JPanel editor() {
         JPanel editor = new JPanel(new BorderLayout(0, 12));
         editor.setOpaque(false);
-        JPanel entrada = panel(Tema.SUPERFICIE, Tema.BORDE);
+        JPanel entrada = panel(Tema.SUPERFICIE);
         entrada.add(titulo("01", "Expresión", false), BorderLayout.NORTH);
         entrada.add(campoConEtiqueta("Función f(x)", expresion), BorderLayout.CENTER);
         editor.add(entrada, BorderLayout.NORTH);
 
-        JPanel intervalo = panel(Tema.SUPERFICIE, Tema.BORDE);
+        JPanel intervalo = panel(Tema.SUPERFICIE);
         intervalo.add(titulo("02", "Intervalo", false), BorderLayout.NORTH);
         JPanel limites = new JPanel(new GridLayout(1, 2, 9, 0));
         limites.setOpaque(false);
@@ -139,7 +138,7 @@ public final class Ventana extends JFrame {
     }
 
     private JPanel resultado() {
-        JPanel panel = panel(Tema.PETROLEO, null);
+        JPanel panel = panel(Tema.PETROLEO);
         JPanel arriba = new JPanel(new BorderLayout(0, 12));
         arriba.setOpaque(false);
         arriba.add(titulo("03", "Resultado", true), BorderLayout.NORTH);
@@ -235,9 +234,15 @@ public final class Ventana extends JFrame {
     }
 
     private static JTextField campo(String nombre) {
-        JTextField campo = new JTextField();
+        JTextField campo = new JTextField() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Tema.pintarControl(g, this);
+                super.paintComponent(g);
+            }
+        };
         campo.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-        Tema.control(campo, 8, 10);
+        Tema.control(campo, Tema.FONDO, 9, 11);
         campo.setCaretColor(Tema.TINTA);
         campo.setSelectionColor(Tema.DISTINTIVO);
         campo.setSelectedTextColor(Tema.TINTA);
@@ -255,8 +260,8 @@ public final class Ventana extends JFrame {
         return bloque;
     }
 
-    private static JPanel panel(Color fondo, Color borde) {
-        JPanel panel = Tema.superficie(fondo, borde);
+    private static JPanel panel(Color fondo) {
+        JPanel panel = Tema.superficie(fondo);
         panel.setLayout(new BorderLayout(0, 12));
         panel.setBorder(BorderFactory.createEmptyBorder(18, 18, 18, 18));
         return panel;
@@ -272,7 +277,7 @@ public final class Ventana extends JFrame {
     private static JPanel titulo(String paso, String texto, boolean resultado) {
         JPanel fila = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         fila.setOpaque(false);
-        JPanel distintivo = Tema.superficie(resultado ? Tema.DISTINTIVO_RESULTADO : Tema.DISTINTIVO, null, 10);
+        JPanel distintivo = Tema.superficie(resultado ? Tema.DISTINTIVO_RESULTADO : Tema.DISTINTIVO, 10);
         distintivo.setLayout(new BorderLayout());
         distintivo.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
         distintivo.add(etiqueta(paso, resultado ? Tema.MENTA : Tema.TEXTO_DISTINTIVO, 12, Font.BOLD));
